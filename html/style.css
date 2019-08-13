@@ -1,0 +1,18 @@
+/*
+body{
+    background-color: black;
+    color: white;
+}
+ */
+.hello {
+    height: 300px;
+    width:  300px;
+    background: black;
+    color: white;
+}
+#box {
+    height: 25px;
+    width: 25px;
+    background: red;
+    position: absolute;
+}
