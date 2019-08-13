@@ -5,7 +5,7 @@ Server servers files requested with http.
 <br />
 Http request length should be under 2048 bytes.
 <br />
-Currently server can only server files under 2048 bytes
+Currently server can only serve files under 2048 bytes
 
 ## Example
 
