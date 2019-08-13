@@ -46,3 +46,23 @@
     mov rdx, rbx
     syscall
 %endmacro
+
+; send to socket. arg 1 connection fd, arg msg, arg 3 msg len
+%macro send_to_sock 3
+    mov rax, SYS_SENDTO
+    mov rdi, %1
+    mov rsi, %2
+    mov rdx, %3
+    mov r10, 0 ; no flags
+    mov r8, 0 ; no sockaddr
+    mov r9, 0 ; no sockaddrlen
+    syscall
+%endmacro
+
+; send 404 header to connectionfd
+%macro http_404 1
+    send_to_sock %1, httpmsg_404, 40
+    send_to_sock %1, server_name, 36
+    send_to_sock %1, httpcnt_html, 40
+    send_to_sock %1, httpmsg_end, 2
+%endmacro

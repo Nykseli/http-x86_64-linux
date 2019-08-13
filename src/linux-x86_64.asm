@@ -73,7 +73,7 @@ SYS_SOCKET     equ  41
 SYS_ACCEPT     equ  43
 SYS_SENDTO     equ  44
 SYS_RECVFROM   equ  45
-SYS_SEDNMSG    equ  46
+SYS_SENDMSG    equ  46
 SYS_RECVMSG    equ  47
 SYS_SHUTDOWN   equ  48
 SYS_BIND       equ  49
