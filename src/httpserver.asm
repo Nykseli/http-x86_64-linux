@@ -131,6 +131,8 @@ _start:
     ; sleep so we can make sure with lsof -i tcp that the socket is up
     ; sleep
 
+; loop for ever the requests
+accept_loop:
     ; Accept a single client request
     mov rax, SYS_ACCEPT
     mov rdi, [socketfd]
@@ -181,6 +183,8 @@ _start:
     mov rdi, [connectfd]
     mov rsi, SHUT_RDWR
     syscall
+
+    jmp accept_loop
 
     ; close the socket
     close [socketfd]
