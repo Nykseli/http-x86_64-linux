@@ -47,7 +47,7 @@
     syscall
 %endmacro
 
-; send to socket. arg 1 connection fd, arg msg, arg 3 msg len
+; send to socket. arg 1 connection fd, arg 2 msg, arg 3 msg len
 %macro send_to_sock 3
     mov rax, SYS_SENDTO
     mov rdi, %1
