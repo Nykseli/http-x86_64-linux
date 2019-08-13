@@ -90,8 +90,34 @@
 %macro http_200 1
     send_to_sock %1, httpmsg_200, 17
     send_to_sock %1, server_name, 36
-    send_to_sock %1, httpcnt_html, 40
+    send_mime_type %1
     send_to_sock %1, httpmsg_end, 2
+%endmacro
+
+%macro send_mime_type 1
+    mov rax, %1
+    push rax
+    parse_mime_type
+    cmp rax, MIME_HTML
+    je %%_send_mime_type_html
+    cmp rax, MIME_CSS
+    je %%_send_mime_type_css
+    cmp rax, MIME_JS
+    je %%_send_mime_type_js
+
+%%_send_mime_type_blob:
+    send_to_sock [rsp], httpcnt_blob, 40
+    jmp %%_send_mime_type_end
+%%_send_mime_type_css:
+    send_to_sock [rsp], httpcnt_css, 24
+    jmp %%_send_mime_type_end
+%%_send_mime_type_js:
+    send_to_sock [rsp], httpcnt_js, 40
+    jmp %%_send_mime_type_end
+%%_send_mime_type_html:
+    send_to_sock [rsp], httpcnt_html, 40
+%%_send_mime_type_end:
+    pop rax
 %endmacro
 
 ; send a file to connectionfd specified by the request_uri

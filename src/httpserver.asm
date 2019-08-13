@@ -21,8 +21,15 @@ section .data
     httpcnt_css db "Content-Type: text/css",13,10
     ; message for js content, len 31
     httpcnt_js db "Content-Type: text/javascript",13,10
+    ; message for blob content, len 40
+    httpcnt_blob db "Content-Type: application/octet-stream",13,10
     ; the last newline for the end of the message, len 2
     httpmsg_end db 13, 10 ; (\r\n)
+
+    ; save the mimes for comparision
+    mime_html db ".html",0
+    mime_js   db ".js",0
+    mime_css  db ".css",0
 
     ; define null ternimated new line character for printing
     new_line db 10, 0
@@ -147,7 +154,7 @@ accept_loop:
     ; save the connection file descriptor
     mov [connectfd], eax
     ; print message so we know that the user connecter
-    print hello_user
+    ; print hello_user
 
     ; get the message from user (http header)
     mov rax, SYS_RECVFROM
@@ -166,12 +173,12 @@ accept_loop:
     ; save the length of the buffer
     mov [client_bufferlen], eax
 
-    print client_buffer
-    print new_line
+    ; print client_buffer
+    ; print new_line
 
     parse_uri
-    print request_uri
-    print new_line
+    ; print request_uri
+    ; print new_line
 
     send_file [connectfd]
 
