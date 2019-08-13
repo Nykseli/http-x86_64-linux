@@ -5,6 +5,7 @@
 
 %include "src/linux-x86_64.asm"
 %include "src/syscall-macro.asm"
+%include "src/string.asm"
 
 ; --------------------- DATA START ----------------------
 section .data
@@ -59,6 +60,16 @@ section .bss
 
     ; also have 32 bits for the length of the header
     client_bufferlen resd 1
+
+    ; bytes for the requested url
+    request_uri resb 512
+    ; int for the length of the uri
+    request_urilen resd 1
+
+    ; bytes for the requested file content
+    request_file resb 2048
+    ; int for the length of the request file content
+    request_filelen resd 1
 ; --------------------- BSS END ------------------------
 
 ; --------------------- TEXT START ----------------------
@@ -156,8 +167,14 @@ _start:
     print client_buffer
     print new_line
 
+    parse_uri
+    print request_uri
+    print new_line
+
+    send_file [connectfd]
+
     ; response with 404 for now
-    http_404 [connectfd]
+    ; http_404 [connectfd]
 
     ; shutdown (close) the client connection
     mov rax, SYS_SHUTDOWN
